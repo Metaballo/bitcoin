@@ -181,7 +181,7 @@ void ReceiveRequestDialog::update()
 
             QImage qrAddrImage = qrImage.scaled(QR_IMAGE_SIZE, QR_IMAGE_SIZE);
             QPainter painter(&qrAddrImage);
-            painter.setFont(QFont(GUIUtil::fixedPitchFont().toString(), 8.5));
+            painter.setFont(QFont(GUIUtil::fixedPitchFont().toString(), 8));
             QRect paddedRect = qrAddrImage.rect();
             paddedRect.setHeight(QR_IMAGE_SIZE-5);
             painter.drawText(paddedRect, Qt::AlignBottom|Qt::AlignCenter, info.address);
