@@ -202,8 +202,12 @@ void CoinControlDialog::buttonSelectAllClicked()
             if (ui->treeWidget->topLevelItem(i)->checkState(COLUMN_CHECKBOX) != state)
                 ui->treeWidget->topLevelItem(i)->setCheckState(COLUMN_CHECKBOX, state);
     ui->treeWidget->setEnabled(true);
-    if (state == Qt::Unchecked)
-        coinControl->UnSelectAll(); // just to be sure
+    if (state == Qt::Unchecked) {
+      ui->pushButtonSelectAll->setText("Select all");
+      coinControl->UnSelectAll(); // just to be sure
+    } else {
+      ui->pushButtonSelectAll->setText("Deselect all");
+    }
     CoinControlDialog::updateLabels(model, this);
 }
 
@@ -406,6 +410,22 @@ void CoinControlDialog::viewItemChanged(QTreeWidgetItem* item, int column)
         // selection changed -> update labels
         if (ui->treeWidget->isEnabled()) // do not update on every click for (un)select all
             CoinControlDialog::updateLabels(model, this);
+
+        Qt::CheckState state = Qt::Checked;
+        for (int i = 0; i < ui->treeWidget->topLevelItemCount(); i++)
+        {
+            if (ui->treeWidget->topLevelItem(i)->checkState(COLUMN_CHECKBOX) != Qt::Unchecked)
+            {
+                state = Qt::Unchecked;
+                break;
+            }
+        }
+
+        if (state == Qt::Checked) {
+          ui->pushButtonSelectAll->setText("Select all");
+        } else {
+          ui->pushButtonSelectAll->setText("Deselect all");
+        }
     }
 
     // TODO: Remove this temporary qt5 fix after Qt5.3 and Qt5.4 are no longer used.
