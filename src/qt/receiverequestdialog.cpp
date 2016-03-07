@@ -179,12 +179,15 @@ void ReceiveRequestDialog::update()
             }
             QRcode_free(code);
 
-            QImage qrAddrImage = qrImage.scaled(QR_IMAGE_SIZE, QR_IMAGE_SIZE);
+            QImage qrAddrImage = QImage(QR_IMAGE_SIZE, QR_IMAGE_SIZE+20, QImage::Format_RGB32);
+            qrAddrImage.fill(0xffffff);
             QPainter painter(&qrAddrImage);
+            painter.drawImage(0, 0, qrImage.scaled(QR_IMAGE_SIZE, QR_IMAGE_SIZE));
             painter.setFont(QFont(GUIUtil::fixedPitchFont().toString(), 8));
             QRect paddedRect = qrAddrImage.rect();
-            paddedRect.setHeight(QR_IMAGE_SIZE-5);
+            paddedRect.setHeight(QR_IMAGE_SIZE+12);
             painter.drawText(paddedRect, Qt::AlignBottom|Qt::AlignCenter, info.address);
+            painter.end();
 
             ui->lblQRCode->setPixmap(QPixmap::fromImage(qrAddrImage));
             ui->btnSaveAs->setEnabled(true);
